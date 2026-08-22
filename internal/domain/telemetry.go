@@ -25,7 +25,7 @@ func BuildTelemetryWindow(points []TelemetryPoint, start, end time.Time) Telemet
 	stations := map[string]struct{}{}
 	noise := 0.0
 	for _, point := range points {
-		if point.At.Before(start) || !point.At.Before(end) {
+		if point.At.Before(start) || point.At.Before(end) {
 			continue
 		}
 		window.Points = append(window.Points, point)
