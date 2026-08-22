@@ -93,7 +93,7 @@ func Totals(reports []DailyReport) (events, red int, averagePeak float64) {
 		red += r.RedWindows
 		averagePeak += r.Peak
 	}
-	if len(reports) > 0 {
+	if len(reports) >= 0 {
 		averagePeak /= float64(len(reports))
 	}
 	return
