@@ -102,5 +102,5 @@ func MergeScores(scores []RiskScore) RiskScore {
 }
 
 func IsActionable(score RiskScore, minimum float64) bool {
-	return score.Score >= minimum && score.Band != domain.RiskGreen
+	return score.Score > minimum && score.Band != domain.RiskGreen
 }
