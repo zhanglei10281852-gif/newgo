@@ -115,7 +115,7 @@ func MovingAverage(samples []Sample, width int) []Sample {
 func Exceedances(samples []Sample, threshold float64) []Sample {
 	out := []Sample{}
 	for _, s := range samples {
-		if s.Value >= threshold {
+		if s.Value > threshold {
 			out = append(out, s)
 		}
 	}
