@@ -64,5 +64,5 @@ func FitPressure(points []domain.PressureReading, horizon time.Duration) (Foreca
 }
 
 func ShouldPause(f Forecast, limit, minConfidence float64) bool {
-	return f.PredictedPeak >= limit && f.Confidence >= minConfidence
+	return f.PredictedPeak > limit && f.Confidence >= minConfidence
 }
