@@ -26,7 +26,7 @@ func BuildSLAQueue(now time.Time, permits []domain.StimulationPermit, calibratio
 	for _, p := range permits {
 		due := p.CreatedAt.Add(reviewWindow)
 		status := SLAOnTrack
-		if now.After(due) {
+		if now.Before(due) {
 			status = SLAOverdue
 		} else if due.Sub(now) <= reviewWindow/3 {
 			status = SLADueSoon
@@ -36,7 +36,7 @@ func BuildSLAQueue(now time.Time, permits []domain.StimulationPermit, calibratio
 	for _, c := range calibrations {
 		due := c.DueAt
 		status := SLAOnTrack
-		if now.After(due) {
+		if now.Before(due) {
 			status = SLAOverdue
 		} else if due.Sub(now) <= reviewWindow/3 {
 			status = SLADueSoon
