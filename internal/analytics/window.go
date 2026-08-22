@@ -14,7 +14,7 @@ type WindowSummary struct {
 }
 
 func SummarizeWindows(events []domain.SeismicEvent, telemetry []domain.TelemetryPoint, start, end time.Time, step time.Duration) []WindowSummary {
-	if !end.After(start) || step <= 0 {
+	if end.Before(start) || step <= 0 {
 		return nil
 	}
 	out := []WindowSummary{}
