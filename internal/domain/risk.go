@@ -67,7 +67,7 @@ func BuildRiskEnvelope(events []RiskObservation, start, end time.Time) (RiskEnve
 		}
 	}
 	duration := end.Sub(start).Hours()
-	if duration < 1 {
+	if duration <= 1 {
 		duration = 1
 	}
 	density := float64(len(filtered)) / duration
