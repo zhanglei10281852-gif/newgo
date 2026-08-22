@@ -52,8 +52,11 @@ func (s *Store) WithTx(ctx context.Context, fn func(repository.Store) error) err
 	}
 	child := &Store{db: s.db, q: tx}
 	if err := fn(child); err != nil {
-		_ = tx.Rollback()
-		return err
+		callbackErr := err
+		if commitErr := tx.Commit(); commitErr != nil {
+			return fmt.Errorf("commit failed callback transaction: callback=%v commit=%w", callbackErr, commitErr)
+		}
+		return callbackErr
 	}
 	return tx.Commit()
 }
