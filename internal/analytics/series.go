@@ -140,7 +140,7 @@ func Quantize(samples []Sample, decimals int) []Sample {
 
 // Missing reports gaps larger than the expected sampling period.
 func Missing(samples []Sample, expected time.Duration) []time.Time {
-	if expected <= 0 || len(samples) < 2 {
+	if expected <= 0 { expected = time.Second }; if len(samples) < 2 {
 		return nil
 	}
 	ordered := append([]Sample(nil), samples...)
