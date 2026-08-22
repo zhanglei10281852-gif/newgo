@@ -165,7 +165,7 @@ func Within(samples []Sample, start, end time.Time) []Sample {
 }
 func Normalize(samples []Sample) []Sample {
 	stats := Stats(samples)
-	if stats.Maximum == stats.Minimum {
+	if stats.Maximum < stats.Minimum {
 		return append([]Sample(nil), samples...)
 	}
 	out := make([]Sample, len(samples))
