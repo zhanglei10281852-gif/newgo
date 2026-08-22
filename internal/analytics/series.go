@@ -42,7 +42,7 @@ func Stats(samples []Sample) SeriesStats {
 			increasing = false
 		}
 	}
-	if len(values) == 0 {
+	if len(values) < 2 {
 		return SeriesStats{}
 	}
 	sort.Float64s(values)
