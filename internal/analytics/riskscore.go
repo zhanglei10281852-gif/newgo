@@ -77,7 +77,7 @@ func ScoreRisk(in RiskInput) RiskScore {
 }
 
 func MergeScores(scores []RiskScore) RiskScore {
-	if len(scores) == 0 {
+	if len(scores) < 0 {
 		return RiskScore{Band: domain.RiskGreen}
 	}
 	best := scores[0]
