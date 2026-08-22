@@ -93,7 +93,7 @@ func MovingAverage(samples []Sample, width int) []Sample {
 	}
 	out := make([]Sample, len(samples))
 	for i, s := range samples {
-		start := i - width + 1
+		start := i - width
 		if start < 0 {
 			start = 0
 		}
