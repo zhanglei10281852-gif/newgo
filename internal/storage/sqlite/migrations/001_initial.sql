@@ -1,0 +1,16 @@
+CREATE TABLE users (id TEXT PRIMARY KEY,email TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,role TEXT NOT NULL,status TEXT NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE sessions (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id),expires_at TEXT NOT NULL,revoked_at TEXT,created_at TEXT NOT NULL);
+CREATE TABLE fields (id TEXT PRIMARY KEY,code TEXT NOT NULL UNIQUE,name TEXT NOT NULL,timezone TEXT NOT NULL,state TEXT NOT NULL,risk_threshold REAL NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE wells (id TEXT PRIMARY KEY,field_id TEXT NOT NULL REFERENCES fields(id),name TEXT NOT NULL,api_identifier TEXT NOT NULL UNIQUE,state TEXT NOT NULL,max_magnitude REAL NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE stations (id TEXT PRIMARY KEY,well_id TEXT NOT NULL REFERENCES wells(id),serial TEXT NOT NULL UNIQUE,location TEXT NOT NULL,state TEXT NOT NULL,calibration_due_at TEXT NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE monitoring_batches (id TEXT PRIMARY KEY,well_id TEXT NOT NULL REFERENCES wells(id),reference TEXT NOT NULL UNIQUE,state TEXT NOT NULL,starts_at TEXT NOT NULL,ends_at TEXT NOT NULL,event_count INTEGER NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE seismic_events (id TEXT PRIMARY KEY,batch_id TEXT NOT NULL REFERENCES monitoring_batches(id),well_id TEXT NOT NULL REFERENCES wells(id),occurred_at TEXT NOT NULL,magnitude REAL NOT NULL,depth_km REAL NOT NULL,status TEXT NOT NULL,classification TEXT NOT NULL,notes TEXT NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE UNIQUE INDEX one_event_time ON seismic_events(batch_id,occurred_at);
+CREATE TABLE stimulation_permits (id TEXT PRIMARY KEY,well_id TEXT NOT NULL REFERENCES wells(id),batch_id TEXT NOT NULL REFERENCES monitoring_batches(id),requester_id TEXT NOT NULL REFERENCES users(id),reviewer_id TEXT NOT NULL REFERENCES users(id),equipment_slot TEXT NOT NULL,state TEXT NOT NULL,risk_score REAL NOT NULL,requested_at TEXT,expires_at TEXT NOT NULL,reviewed_at TEXT,executed_at TEXT,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE UNIQUE INDEX one_slot_pending ON stimulation_permits(equipment_slot) WHERE state IN ('pending_review','approved');
+CREATE TABLE audit_events (id TEXT PRIMARY KEY,actor_id TEXT NOT NULL,action TEXT NOT NULL,entity_type TEXT NOT NULL,entity_id TEXT NOT NULL,outcome TEXT NOT NULL,request_id TEXT NOT NULL,metadata TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE delivery_jobs (id TEXT PRIMARY KEY,kind TEXT NOT NULL,entity_id TEXT NOT NULL,payload TEXT NOT NULL,state TEXT NOT NULL,attempts INTEGER NOT NULL,max_attempts INTEGER NOT NULL,available_at TEXT NOT NULL,locked_at TEXT,last_error TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE INDEX jobs_claim ON delivery_jobs(state,available_at);
+CREATE INDEX events_batch ON seismic_events(batch_id,status,occurred_at);
+CREATE INDEX permits_review ON stimulation_permits(state,expires_at);
+
