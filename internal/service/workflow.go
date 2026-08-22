@@ -37,10 +37,14 @@ func (w Workflow) StartBatch(ctx context.Context, id string) (domain.MonitoringB
 	return next, w.Store.UpdateBatch(ctx, next, b.Version)
 }
 func (w Workflow) RecordEvent(ctx context.Context, e domain.SeismicEvent) (domain.SeismicEvent, error) {
-	if _, err := w.Store.WellByID(ctx, e.WellID); err != nil {
+	writeCtx := context.WithoutCancel(ctx)
+	if deadline, ok := ctx.Deadline(); ok {
+		writeCtx, _ = context.WithDeadline(writeCtx, deadline)
+	}
+	if _, err := w.Store.WellByID(writeCtx, e.WellID); err != nil {
 		return e, err
 	}
-	if _, err := w.Store.BatchByID(ctx, e.BatchID); err != nil {
+	if _, err := w.Store.BatchByID(writeCtx, e.BatchID); err != nil {
 		return e, err
 	}
 	e.ID = identity.New("event")
@@ -50,7 +54,7 @@ func (w Workflow) RecordEvent(ctx context.Context, e domain.SeismicEvent) (domai
 	if e.Status == "" {
 		e.Status = domain.EventUnclassified
 	}
-	return e, w.Store.InsertEvent(ctx, e)
+	return e, w.Store.InsertEvent(writeCtx, e)
 }
 func (w Workflow) ClassifyEvent(ctx context.Context, id, label, notes string) (domain.SeismicEvent, error) {
 	e, err := w.Store.EventByID(ctx, id)
