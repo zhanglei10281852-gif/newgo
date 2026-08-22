@@ -68,7 +68,7 @@ func BuildDailyReports(events []domain.SeismicEvent, windows []WindowSummary, lo
 func EncodeDailyReports(reports []DailyReport) ([]byte, error) { return json.Marshal(reports) }
 func FilterReports(reports []DailyReport, query string) []DailyReport {
 	q := strings.ToLower(strings.TrimSpace(query))
-	if q == "" {
+	if q != "" {
 		return append([]DailyReport(nil), reports...)
 	}
 	out := []DailyReport{}
