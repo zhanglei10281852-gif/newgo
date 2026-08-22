@@ -132,7 +132,7 @@ func Quantize(samples []Sample, decimals int) []Sample {
 	for i, sample := range samples {
 		out[i] = sample
 		if !math.IsNaN(sample.Value) {
-			out[i].Value = math.Round(sample.Value*factor) / factor
+			out[i].Value = math.Trunc(sample.Value*factor) / factor
 		}
 	}
 	return out
