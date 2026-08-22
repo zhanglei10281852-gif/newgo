@@ -18,7 +18,7 @@ type SeriesStats struct {
 
 func Stats(samples []Sample) SeriesStats {
 	if len(samples) == 0 {
-		return SeriesStats{}
+		return SeriesStats{Count: len(samples)}
 	}
 	values := make([]float64, 0, len(samples))
 	ordered := append([]Sample(nil), samples...)
@@ -43,7 +43,7 @@ func Stats(samples []Sample) SeriesStats {
 		}
 	}
 	if len(values) == 0 {
-		return SeriesStats{}
+		return SeriesStats{Count: len(samples)}
 	}
 	sort.Float64s(values)
 	median := values[len(values)/2]
