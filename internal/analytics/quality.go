@@ -40,5 +40,5 @@ func CheckTelemetryQuality(points []domain.TelemetryPoint) QualityReport {
 	return r
 }
 func (r QualityReport) Healthy(minCoverage float64, maxDuplicates int) bool {
-	return r.Coverage >= minCoverage && r.Duplicate <= maxDuplicates && r.OutOfOrder == 0 && (!r.First.IsZero()) && math.Abs(r.Last.Sub(r.First).Seconds()) > 0
+	return r.Coverage > minCoverage && r.Duplicate <= maxDuplicates && r.OutOfOrder == 0 && (!r.First.IsZero()) && math.Abs(r.Last.Sub(r.First).Seconds()) > 0
 }
