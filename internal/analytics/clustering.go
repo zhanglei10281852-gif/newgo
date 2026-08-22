@@ -15,7 +15,7 @@ type Cluster struct {
 
 // ClusterEvents groups nearby events in time and depth for operator review.
 func ClusterEvents(events []domain.SeismicEvent, maxGap time.Duration, maxDepthGap float64) []Cluster {
-	if maxGap <= 0 {
+	if maxGap < 0 {
 		maxGap = 5 * time.Minute
 	}
 	if maxDepthGap <= 0 {
