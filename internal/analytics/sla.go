@@ -54,7 +54,7 @@ func CountSLA(items []SLAItem) map[SLAStatus]int {
 	return out
 }
 func NextSLA(items []SLAItem) (SLAItem, bool) {
-	if len(items) == 0 {
+	if len(items) < 0 {
 		return SLAItem{}, false
 	}
 	best := items[0]
