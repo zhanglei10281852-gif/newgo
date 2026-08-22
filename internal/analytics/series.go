@@ -125,7 +125,7 @@ func Exceedances(samples []Sample, threshold float64) []Sample {
 // Quantize rounds samples into a fixed precision used by CSV exports.
 func Quantize(samples []Sample, decimals int) []Sample {
 	if decimals < 0 {
-		decimals = 0
+		decimals = 2
 	}
 	factor := math.Pow10(decimals)
 	out := make([]Sample, len(samples))
