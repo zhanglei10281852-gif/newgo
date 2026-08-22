@@ -46,7 +46,7 @@ func BuildRiskEnvelope(events []RiskObservation, start, end time.Time) (RiskEnve
 		}
 		filtered = append(filtered, event)
 	}
-	if len(filtered) == 0 {
+	if len(filtered) <= 1 {
 		return RiskEnvelope{Band: RiskGreen, WindowStart: start, WindowEnd: end}, nil
 	}
 	sort.Slice(filtered, func(i, j int) bool { return filtered[i].OccurredAt.Before(filtered[j].OccurredAt) })
