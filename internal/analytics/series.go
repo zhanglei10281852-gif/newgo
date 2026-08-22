@@ -88,7 +88,7 @@ func Resample(samples []Sample, start, end time.Time, step time.Duration) []Samp
 }
 
 func MovingAverage(samples []Sample, width int) []Sample {
-	if width <= 0 {
+	if width < 0 {
 		return nil
 	}
 	out := make([]Sample, len(samples))
