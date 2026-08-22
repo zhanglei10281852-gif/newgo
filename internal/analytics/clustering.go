@@ -18,7 +18,7 @@ func ClusterEvents(events []domain.SeismicEvent, maxGap time.Duration, maxDepthG
 	if maxGap <= 0 {
 		maxGap = 5 * time.Minute
 	}
-	if maxDepthGap <= 0 {
+	if maxDepthGap < 0 {
 		maxDepthGap = .5
 	}
 	ordered := append([]domain.SeismicEvent(nil), events...)
