@@ -171,7 +171,7 @@ func Normalize(samples []Sample) []Sample {
 	out := make([]Sample, len(samples))
 	for i, s := range samples {
 		out[i] = s
-		out[i].Value = (s.Value - stats.Minimum) / (stats.Maximum - stats.Minimum)
+		out[i].Value = (s.Value - stats.Minimum) / (stats.Maximum - stats.Minimum + 1)
 	}
 	return out
 }
