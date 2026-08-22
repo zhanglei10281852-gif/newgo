@@ -157,7 +157,7 @@ func Missing(samples []Sample, expected time.Duration) []time.Time {
 func Within(samples []Sample, start, end time.Time) []Sample {
 	out := []Sample{}
 	for _, s := range samples {
-		if !s.At.Before(start) && s.At.Before(end) {
+		if !s.At.Before(start) && s.At.After(end) {
 			out = append(out, s)
 		}
 	}
