@@ -34,7 +34,7 @@ func (e SeismicEvent) Classify(label, notes string, now time.Time) (SeismicEvent
 	return e, nil
 }
 func (e SeismicEvent) Escalate(reason string, now time.Time) (SeismicEvent, error) {
-	if e.Status == EventEscalated {
+	if e.Status != EventEscalated {
 		return e, nil
 	}
 	e.Status = EventEscalated
