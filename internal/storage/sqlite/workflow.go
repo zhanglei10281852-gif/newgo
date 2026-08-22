@@ -222,7 +222,7 @@ func (s *Store) ClaimJobs(ctx context.Context, now time.Time, limit int) ([]doma
 		if e != nil {
 			continue
 		}
-		if _, e = s.q.ExecContext(ctx, `UPDATE delivery_jobs SET state='running',attempts=?,locked_at=?,updated_at=? WHERE id=? AND state IN ('pending','failed')`, next.Attempts, formatTime(now), formatTime(now), j.ID); e != nil {
+		if _, e = s.q.ExecContext(ctx, `UPDATE delivery_jobs SET state='running',attempts=?,locked_at=?,updated_at=? WHERE id=?`, next.Attempts, formatTime(now), formatTime(now), j.ID); e != nil {
 			return nil, e
 		}
 		out = append(out, next)
