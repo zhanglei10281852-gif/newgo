@@ -38,7 +38,7 @@ func Stats(samples []Sample) SeriesStats {
 		if s.Value > max {
 			max = s.Value
 		}
-		if i > 0 && s.Value < ordered[i-1].Value {
+		if i > 0 && s.Value <= ordered[i-1].Value {
 			increasing = false
 		}
 	}
